@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket</title>
+</head>
+<body>
+
+    <input type="text" id="message" placeholder="your message . . .">
+    <button id="send"> send message </button>
+    <hr>
+    <hr>
+    <hr>
+    <div id="msg">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let ws = new WebSocket("ws://localhost:7777");
+        $("#send").click(function (){
+            let msg = $("#message").val()
+            ws.send(JSON.stringify({
+                text:msg
+            }))
+
+            ws.onmessage = function (res){
+                var message = JSON.parse(res.data).text
+                var me = document.createElement('p' )
+                me.textContent = message
+                $("#msg").prepend(me)
+            }
+        })
+    </script>
+</body>
+</html>
